@@ -54,7 +54,7 @@ function newWorld(stage, stageWidth, stageHeight) {
 	scoreDisplay.textAlign = "right";
 	scoreDisplay.x = stageWidth - 10;
 	scoreDisplay.y = 24;
-	scoreDisplay.font = "bold 24px sans-serif";
+	scoreDisplay.font = "bold 24px monospace";
 	skierContainer.addChild(scoreDisplay);
 
 	// now add our skier
