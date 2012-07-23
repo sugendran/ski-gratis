@@ -1,0 +1,34 @@
+/*
+ * Yes this CSS is ugly, but it's a demo
+ * about canvas and not styling html+css.
+ */
+
+html, body {
+	background: black;
+	color: white;
+	font-family: monospace;
+}
+
+h1 strike {
+	color: #CCC;
+}
+
+#canvas-container {
+	margin: 0px auto;
+	width: 960px;
+}
+
+#canvas {
+	background: white;
+}
+
+dl.legend dt, dl.legend dd {
+	display: inline;
+	margin-left: 0px;
+}
+
+dl.legend dt img {
+	background: white;
+	width: 20px;	
+	margin-left: 40px;
+}
