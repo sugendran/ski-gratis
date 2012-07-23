@@ -241,6 +241,9 @@ function loadSkiGratis(elementId) {
     Ticker.useRAF = true;
     Ticker.setFPS(60);
 
+    // allow touches to work
+    Touch.enable(stage);
+
     // global listener - not cool for embedding, but nice for debugging
 	window.addEventListener("keypress", function(e) {
 		if(e.charCode == 97) {
