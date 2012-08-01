@@ -22,7 +22,7 @@
 		var TILE_EDGE = 64;
 		var TILE_EDGE_MINUS = -TILE_EDGE;
 		var HALF_TILE_EDGE = TILE_EDGE * 0.5;
-		var DIFFICULTY = 40;
+		var DIFFICULTY = 28;
 
 		// "privates" (Haha... I made you say privates in your head)
 		var _gameGrid = [];
@@ -33,6 +33,10 @@
 		var _direction = 0;
 		var _crashed = false;
 		var _score = 0;
+		var _offsetYPerTick = TILE_EDGE / 1000;
+		var _offsetXPerTick = 2 * TILE_EDGE / 1000;
+		var _offsetYSpeedUp = 0;
+		var _bearUnleashed = false;
 
 		// no z-indexes anywhere... WTF.
 		// gonna setup a "container" for each layer
@@ -74,6 +78,22 @@
 		crash.visible = false;
 		crash.alpha = 0;
 		skierContainer.addChild(crash);
+
+		// load the sprite sheet
+		var bearSpriteSheet = new SpriteSheet({
+			images: ["images/bear.png"],
+			// each frame is a 64x64 square
+			frames: {width: 64, height: 64, count: 4, regX: 32, regY: 64},
+			// only one animation in the list and it uses frames zero to three
+			animations: { run: [0, 3, true, 10] }
+		});
+		// make a bitmap object for sticking onto the screen
+		var bear = new BitmapAnimation(bearSpriteSheet);
+		// start that running animation up
+		bear.gotoAndPlay("run");
+		bear.x = -TILE_EDGE;
+		bear.y = -TILE_EDGE;
+		skierContainer.addChild(bear);
 
 		// build up the grid
 		// the grid is a map of the world
@@ -138,6 +158,11 @@
 		// first run to get some locations happening before we draw
 		updateGrid();
 
+		// we should speed up as time goes by and then reset it when we crash!
+		setInterval(function(){
+			_offsetYSpeedUp += (_offsetYPerTick * 0.5);
+		},1000);
+
 
 		// this function will do a very simple collision check
 		// it just checks to see if the anchor point of the person
@@ -154,6 +179,8 @@
 				_crashed = true;
 				Tween.get(skier).to({alpha: 0}, 200).set({visible: false});
 				Tween.get(crash).set({visible: true}).to({alpha: 1}, 200);
+				_offsetYSpeedUp = 0;
+				_score -= 50;
 				setTimeout(function(){ 
 					Tween.get(crash).to({alpha: 0}, 200).set({visible: false});
 					Tween.get(skier).set({visible: true}).to({alpha: 1}, 200);
@@ -163,21 +190,32 @@
 		}
 
 
+		function killPlayer() {
+			Tween.get(bear).to({x: skier.x, y: skier.y}, 3000, Ease.elasticOut).call(function(){
+				crash.alpha = 1;
+				skier.alpha = 0;
+				Ticker.setPaused(true);
+			});
+		}
+
 		// we want to move 1 tile every 1 second
 		// so we need to work out how many pixels
 		// are moved per tick
 		// The tick function gets called with the elapsed time
 		// since the last time it was called
-		var offsetYPerTick = TILE_EDGE / 1000;
-		var offsetXPerTick = 2 * TILE_EDGE / 1000;
 		this.tick = function(elapsed) {
-			_offsetY -= offsetYPerTick * elapsed;
-			_offsetX -= _direction * offsetXPerTick * elapsed;
+			_offsetY -= (_offsetYPerTick + _offsetYSpeedUp) * elapsed;
+			_offsetX -= _direction * _offsetXPerTick * elapsed;
 			updateGrid();
 			checkForCollision();
 
 			if(!_crashed) {
 				_score += (elapsed / 100);
+			}
+
+			if(_score > 1000 && !_bearUnleashed) {
+				// unleash the bear and end the game
+				killPlayer();
 			}
 
 			fpsDisplay.text = "fps: " + ~~Ticker.getMeasuredFPS();
