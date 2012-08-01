@@ -160,7 +160,7 @@
 
 		// we should speed up as time goes by and then reset it when we crash!
 		setInterval(function(){
-			_offsetYSpeedUp += (_offsetYPerTick * 0.5);
+			_offsetYSpeedUp = Math.min(8, _offsetXPerTick + (_offsetYPerTick * 0.5));
 		},1000);
 
 
