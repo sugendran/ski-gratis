@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+		xmlns:rim="http://www.blackberry.com/ns/widgets"
+        xmlns:gap = "http://phonegap.com/ns/1.0"
+		version="2.0.0.0" id="skigratis">
+	<name>Ski Gratis</name>
+	<preference name="orientation" value="landscape" />
+	<preference name="fullscreen" value="true" />
+	<author href="http://sugendran.info" rim:copyright="Copyright 2012 Sugendran">Sugendran Ganess</author>
+	<content src="mobile.html"/>
+</widget>
