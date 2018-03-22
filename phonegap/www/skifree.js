@@ -18,6 +18,7 @@
 	// in theory we can have many ski free games
 	// all at the same time!
 	function newWorld(stage, stageWidth, stageHeight) {
+		console.log(stageWidth, stageHeight);
 		// "Constants"
 		var TILE_EDGE = 64;
 		var TILE_EDGE_MINUS = -TILE_EDGE;
@@ -40,21 +41,21 @@
 
 		// no z-indexes anywhere... WTF.
 		// gonna setup a "container" for each layer
-		var bgContainer = new createjs.Container();
-		var skierContainer = new createjs.Container();
+		var bgContainer = new Container();
+		var skierContainer = new Container();
 		stage.addChild(bgContainer);
 		stage.addChild(skierContainer);
 
 		// displaying the frames per second 
 		// seems like a popular thing to do
-		var fpsDisplay = new createjs.Text();
+		var fpsDisplay = new Text();
 		fpsDisplay.textAlign = "right";
 		fpsDisplay.x = stageWidth - 10;
 		fpsDisplay.y = stageHeight - 10;
 		skierContainer.addChild(fpsDisplay);
 
 		// draw the score in the top right
-		var scoreDisplay = new createjs.Text();
+		var scoreDisplay = new Text();
 		scoreDisplay.textAlign = "right";
 		scoreDisplay.x = stageWidth - 10;
 		scoreDisplay.y = 24;
@@ -62,7 +63,7 @@
 		skierContainer.addChild(scoreDisplay);
 
 		// now add our skier
-		var skier = new createjs.Bitmap("images/person.png");
+		var skier = new Bitmap("images/person.png");
 		skier.regX = HALF_TILE_EDGE;
 		skier.regY = TILE_EDGE;
 		skier.x = (stageWidth * 0.5);
@@ -70,7 +71,7 @@
 		skierContainer.addChild(skier);
 
 		// also add a crash/stumble icon, but keep it hidden
-		var crash = new createjs.Bitmap("images/crash.png");
+		var crash = new Bitmap("images/crash.png");
 		crash.regX = HALF_TILE_EDGE;
 		crash.regY = TILE_EDGE;
 		crash.x = (stageWidth * 0.5);
@@ -80,7 +81,7 @@
 		skierContainer.addChild(crash);
 
 		// load the sprite sheet
-		var bearSpriteSheet = new createjs.SpriteSheet({
+		var bearSpriteSheet = new SpriteSheet({
 			images: ["images/bear.png"],
 			// each frame is a 64x64 square
 			frames: {width: 64, height: 64, count: 4, regX: 32, regY: 64},
@@ -88,7 +89,7 @@
 			animations: { run: [0, 3, true, 10] }
 		});
 		// make a bitmap object for sticking onto the screen
-		var bear = new createjs.Sprite(bearSpriteSheet, "run");
+		var bear = new BitmapAnimation(bearSpriteSheet);
 		// start that running animation up
 		bear.gotoAndPlay("run");
 		bear.x = -TILE_EDGE;
@@ -103,11 +104,11 @@
 			for(var i=0, ii=_maxCols; i<ii; i++) {
 				var r = Math.floor(Math.random() * DIFFICULTY);
 				if(r == 1) {
-					var tree = new createjs.Bitmap("images/tree.png");
+					var tree = new Bitmap("images/tree.png");
 					bgContainer.addChild(tree);
 					newRow.push(tree);
 				} else if(r == 2) {
-					var rock = new createjs.Bitmap("images/rock.png");
+					var rock = new Bitmap("images/rock.png");
 					bgContainer.addChildAt(rock);
 					newRow.push(rock);
 				} else {
@@ -177,13 +178,13 @@
 				// between the sprites was very jarring so I stuck it in.
 				// plus you get to see tween.js work
 				_crashed = true;
-				createjs.Tween.get(skier).to({alpha: 0}, 200).set({visible: false});
-				createjs.Tween.get(crash).set({visible: true}).to({alpha: 1}, 200);
+				Tween.get(skier).to({alpha: 0}, 200).set({visible: false});
+				Tween.get(crash).set({visible: true}).to({alpha: 1}, 200);
 				_offsetYSpeedUp = 0;
 				_score -= 50;
 				setTimeout(function(){ 
-					createjs.Tween.get(crash).to({alpha: 0}, 200).set({visible: false});
-					createjs.Tween.get(skier).set({visible: true}).to({alpha: 1}, 200);
+					Tween.get(crash).to({alpha: 0}, 200).set({visible: false});
+					Tween.get(skier).set({visible: true}).to({alpha: 1}, 200);
 					_crashed = false; 
 				}, 2300);
 			}
@@ -191,10 +192,10 @@
 
 
 		function killPlayer() {
-			createjs.Tween.get(bear).to({x: skier.x, y: skier.y}, 3000, createjs.Ease.elasticOut).call(function(){
+			Tween.get(bear).to({x: skier.x, y: skier.y}, 3000, Ease.elasticOut).call(function(){
 				crash.alpha = 1;
 				skier.alpha = 0;
-				createjs.Ticker.paused = true;
+				Ticker.setPaused(true);
 			});
 		}
 
@@ -203,8 +204,7 @@
 		// are moved per tick
 		// The tick function gets called with the elapsed time
 		// since the last time it was called
-		this.tick = function(event) {
-			var elapsed = event.delta;
+		this.tick = function(elapsed) {
 			_offsetY -= (_offsetYPerTick + _offsetYSpeedUp) * elapsed;
 			_offsetX -= _direction * _offsetXPerTick * elapsed;
 			updateGrid();
@@ -214,15 +214,15 @@
 				_score += (elapsed / 100);
 			}
 
-			if(_score > 1000 && !_bearUnleashed) {
-				// unleash the bear and end the game
-				killPlayer();
-			}
+// no killing in the mobile version
+//			if(_score > 1000 && !_bearUnleashed) {
+//				// unleash the bear and end the game
+//				killPlayer();
+//			}
 
-			fpsDisplay.text = "fps: " + ~~createjs.Ticker.getMeasuredFPS();
+			fpsDisplay.text = "fps: " + ~~Ticker.getMeasuredFPS();
 			scoreDisplay.text = Math.floor(_score) + " points";
 			stage.tick();
-			stage.update();
 		};
 
 		// just going to skew the object along the Y-axis 
@@ -273,18 +273,19 @@
 	function loadSkiGratis(elementId) {
 		// setup the canvas
 		canvasElement = document.getElementById(elementId);
-		var stage = new createjs.Stage(canvasElement);
+		var stage = new Stage(canvasElement);
 		var height = canvasElement.height;
 		var width = canvasElement.width;
 		// create our world object
 		var world = newWorld(stage, width, height);
 		// tell the Ticker to call world.tick such that
 		// it renders at 60 FPS
-	    createjs.Ticker.addEventListener("tick", world.tick.bind(world));
-	    createjs.Ticker.framerate = 16;
+	    Ticker.addListener(world);
+	    Ticker.useRAF = true;
+	    Ticker.setFPS(60);
 
 	    // allow touches to work
-	    createjs.Touch.enable(stage);
+	    Touch.enable(stage);
 
 	    // global listener - not cool for embedding, but nice for debugging
 		window.addEventListener("keypress", function(e) {

@@ -2,28 +2,15 @@
 <html lang="en">
 	<head>
 		<link rel="stylesheet" type="text/css" href="skifree.css" />
-		<meta name="viewport" content="width=960, initial-scale=1" />
 		<title>Ski Gratis - By Sugendran</title>
+		<meta name="viewport" content="width=960, initial-scale=1" />
 		<!-- cdn script src="http://code.createjs.com/easeljs-0.4.1.min.js" -->
 		<script type="text/javascript" src="easeljs-1.0.0.min.js"></script>
 		<script type="text/javascript" src="tweenjs-1.0.0.min.js"></script>
 		<script type="text/javascript" src="skifree.js"></script>
-
 	</head>
 	<body>
-		<div id="canvas-container">
-			<h1>Ski <strike>Free</strike> Gratis</h1>
-			<canvas id="canvas" width="960" height="640"></canvas>
-			<p> Use your mouse or finger to steer. All icons are Japanese characters.</p>
-			<dl class="legend">
-				<dt><img src="images/person.png" /></dt>
-				<dd>Person</dd>
-				<dt><img src="images/tree.png" /></dt>
-				<dd>Wood/Tree</dd>
-				<dt><img src="images/rock.png" /></dt>
-				<dd>Rock</dd>
-			</dl>
-		</div>
+		<canvas id="canvas" style="width:100vw;height:100vh;"></canvas>
 		<script type="text/javascript">
 			skigratis("canvas");
 		</script>
