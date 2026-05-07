@@ -1,0 +1,25 @@
+{
+  "name": "ski-gratis",
+  "version": "1.0.0",
+  "description": "Ski Free for free =================",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sugendran/ski-gratis.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sugendran/ski-gratis/issues"
+  },
+  "homepage": "https://github.com/sugendran/ski-gratis#readme",
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "vite": "^8.0.11"
+  }
+}

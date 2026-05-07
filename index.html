@@ -1,44 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<link rel="stylesheet" type="text/css" href="skifree.css" />
-		<meta name="viewport" content="width=960, initial-scale=1" />
-		<title>Ski Gratis - By Sugendran</title>
-		<!-- cdn script src="http://code.createjs.com/easeljs-0.4.1.min.js" -->
-		<script type="text/javascript" src="easeljs-1.0.0.min.js"></script>
-		<script type="text/javascript" src="tweenjs-1.0.0.min.js"></script>
-		<script type="text/javascript" src="skifree.js"></script>
-
-	</head>
-	<body>
-		<div id="canvas-container">
-			<h1>Ski <strike>Free</strike> Gratis</h1>
-			<canvas id="canvas" width="960" height="640"></canvas>
-			<p> Use your mouse or finger to steer. All icons are Japanese characters.</p>
-			<dl class="legend">
-				<dt><img src="images/person.png" /></dt>
-				<dd>Person</dd>
-				<dt><img src="images/tree.png" /></dt>
-				<dd>Wood/Tree</dd>
-				<dt><img src="images/rock.png" /></dt>
-				<dd>Rock</dd>
-			</dl>
-		</div>
-		<script type="text/javascript">
-			skigratis("canvas");
-		</script>
-		<script type="text/javascript">
-
-		  var _gaq = _gaq || [];
-		  _gaq.push(['_setAccount', 'UA-943980-6']);
-		  _gaq.push(['_trackPageview']);
-
-		  (function() {
-		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		  })();
-
-		</script>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=960, initial-scale=1" />
+    <title>Ski Gratis - By Sugendran</title>
+    <link rel="stylesheet" href="skifree.css" />
+  </head>
+  <body>
+    <div id="canvas-container">
+      <h1>Ski <s>Free</s> Gratis</h1>
+      <canvas id="canvas" width="960" height="640"></canvas>
+      <p>Use your mouse, finger, or A/S/D keys to steer. All icons are Japanese characters.</p>
+      <dl class="legend">
+        <dt><img src="person.png" alt="Person" /></dt>
+        <dd>Person (人)</dd>
+        <dt><img src="tree.png" alt="Tree" /></dt>
+        <dd>Wood/Tree (木)</dd>
+        <dt><img src="rock.png" alt="Rock" /></dt>
+        <dd>Rock (岩)</dd>
+      </dl>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>
